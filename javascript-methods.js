@@ -96,10 +96,22 @@ Array.prototype.myLastIndexOf = function(searchElement) {
 
 // KEYS //
 Object.myKeys = function(object) {
+  let res = new Array();
+  for(const key in object){
+    res.push(key)
+  }
+  return res;
+
   // Place your code here.
 };
 
 // VALUES //
 Object.myValues = function(object) {
   // Place your code here.
+  let res = new Array();
+  for(const key in object){
+    res.push(object[key])
+  }
+  return res;
+
 };
