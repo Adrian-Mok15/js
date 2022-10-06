@@ -9,18 +9,24 @@ In this Assignment, we use the prototype constructor to add new methods to the A
 ----------------------------------------------------------*/
 
 // MAP //
-Array.prototype.myMap = function(callbackFn) {
-  // Place your code here.
+Array.prototype.myMap = function(callbackFn, thisArg) {
+  // Place your code here.\
+  if(thisArg === undefined){
+    thisArg = this
+  }
   let res = new Array();
   for(let i = 0; i < this.length; ++i){
-    res.push(callbackFn(this[i], i, this));
+    res.push(callbackFn(this[i], i, thisArg));
   }
   return res;
 };
 
 // FILTER //
-Array.prototype.myFilter = function(callbackFn) {
+Array.prototype.myFilter = function(callbackFn, thisArg) {
   let res = new Array();
+  if(thisArg === undefined){
+    thisArg = this
+  }
   for(let i = 0; i < this.length; ++i){
     if(callbackFn(this[i],i,this)){
       res.push(this[i]);
@@ -32,9 +38,12 @@ Array.prototype.myFilter = function(callbackFn) {
 };
 
 // SOME //
-Array.prototype.mySome = function(callbackFn) {
+Array.prototype.mySome = function(callbackFn, thisArg) {
 
   // Place your code here.
+  if(thisArg === undefined){
+    thisArg = this
+  }
   for(let i = 0; i < this.length; ++i){
     if(callbackFn(this[i],i,this)){
       return true;
@@ -45,8 +54,11 @@ Array.prototype.mySome = function(callbackFn) {
 };
 
 // EVERY //
-Array.prototype.myEvery = function(callbackFn) {
+Array.prototype.myEvery = function(callbackFn, thisArg) {
   // Place your code here.
+  if(thisArg === undefined){
+    thisArg = this
+  }
   for(let i = 0; i < this.length; ++i){
     if(!callbackFn(this[i],i,this)){
       return false;
@@ -57,13 +69,25 @@ Array.prototype.myEvery = function(callbackFn) {
 };
 
 // REDUCE //
-Array.prototype.myReduce = function(callbackFn) {
+Array.prototype.myReduce = function(callbackFn, initVal) {
   // Place your code here.
+  let res = initVal
+
+  for(let i = 0; i < this.length; ++i){
+    if(res === undefined){
+      res = this[i];
+    }
+    else{
+      res = callbackFn(res, this[i], i, this);
+    }
+  }
+  return res;
+  
 };
 
 // INCLUDES //
-Array.prototype.myIncludes = function(searchElement) {
-  for(let i = 0; i < this.length; ++i){
+Array.prototype.myIncludes = function(searchElement, fromIndex = 0) {
+  for(let i = fromIndex; i < this.length; ++i){
     if(this[i] === searchElement){
       return true;
     }
@@ -73,9 +97,9 @@ Array.prototype.myIncludes = function(searchElement) {
 };
 
 // INDEXOF //
-Array.prototype.myIndexOf = function(searchElement) {
+Array.prototype.myIndexOf = function(searchElement, fromIndex = 0) {
   // Place your code here.
-  for(let i = 0; i < this.length; ++i){
+  for(let i = fromIndex; i < this.length; ++i){
     if(this[i] === searchElement){
       return i;
     }
@@ -84,9 +108,9 @@ Array.prototype.myIndexOf = function(searchElement) {
 };
 
 // LASTINDEXOF //
-Array.prototype.myLastIndexOf = function(searchElement) {
+Array.prototype.myLastIndexOf = function(searchElement, fromIndex = this.length - 1) {
   // Place your code here.
-  for(let i = this.length - 1; i > -1; --i){
+  for(let i = fromIndex; i > -1; --i){
     if(this[i] === searchElement){
       return i;
     }
@@ -115,3 +139,105 @@ Object.myValues = function(object) {
   return res;
 
 };
+
+
+// const array1 = [1, 4, 9, 16];
+
+// // pass a function to map
+// const map1 = array1.myMap(x => x * 2);
+
+// console.log(map1);
+// expected output: Array [2, 8, 18, 32]
+
+
+// const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+
+// const result = words.myFilter(word => word.length > 6);
+
+// console.log(result);
+// expected output: Array ["exuberant", "destruction", "present"]
+
+
+// const array = [1,2, 3, 5];
+
+// // checks whether an element is even
+// const even = (element) => element % 2 === 0;
+
+// console.log(array.mySome(even));
+// // expected output: true
+
+
+// const isBelowThreshold = (currentValue) => currentValue < 40;
+
+// const array1 = [1, 30, 39, 29, 10, 13];
+
+// console.log(array1.myEvery(isBelowThreshold));
+// expected output: true
+
+
+// const array1 = [1, 2, 3, 4];
+
+// // // 0 + 1 + 2 + 3 + 4
+// const initialValue = 20;
+// const sumWithInitial = array1.myReduce(
+//   (previousValue, currentValue) => previousValue + currentValue,
+//   initialValue
+// );
+
+// console.log(sumWithInitial);
+// expected output: 10
+
+// const array1 = [1, 2, 3];
+
+// console.log(array1.myIncludes(2));
+// // expected output: true
+
+// const pets = ['cat', 'dog', 'bat'];
+
+// console.log(pets.myIncludes('cat'));
+// // expected output: true
+
+// console.log(pets.myIncludes('at'));
+// expected output: false
+
+// --------------------------------------------------------------------------------------------------------------
+
+
+// const beasts = ['ant', 'bison', 'camel', 'duck', 'bison'];
+
+// console.log(beasts.myIndexOf('bison'));
+// // expected output: 1
+
+// // start from index 2
+// console.log(beasts.myIndexOf('bison', 2));
+// // expected output: 4
+
+// console.log(beasts.myIndexOf('giraffe'));
+// expected output: -1
+// --------------------------------------------------------------------------------------------------------------
+
+// const animals = ['Dodo', 'Tiger', 'Penguin', 'Dodo'];
+
+// console.log(animals.myLastIndexOf('Dodo'));
+// // expected output: 3
+
+// console.log(animals.myLastIndexOf('Tiger'));
+// // expected output: 1
+
+// const object1 = {
+//   a: 'somestring',
+//   b: 42,
+//   c: false
+// };
+
+// console.log(Object.myKeys(object1));
+// expected output: Array ["a", "b", "c"]
+
+// const object1 = {
+//   a: 'somestring',
+//   b: 42,
+//   c: false
+// };
+
+// console.log(Object.myValues(object1));
+// expected output: Array ["somestring", 42, false]
